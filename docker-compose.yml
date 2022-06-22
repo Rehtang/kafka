@@ -3,15 +3,15 @@ services:
   # *----------------------------------------*
   # PROVIDING MAIN SERVICE
   # *----------------------------------------*
-  news-provider-ifx:
+  kafkaExampleTest:
     build:
       context: .
       dockerfile: Dockerfile
     links:
-      - broker
+      - producer
     depends_on:
       - redis-cache
-      - broker
+      - producer
     ports:
       - "8080:8080"
     networks:
@@ -29,12 +29,10 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-  broker:
+  producer:
     container_name: broker
     image: confluentinc/cp-server:5.5.1
-    hostname: broker
-    networks:
-      - msanet
+    hostname: producer
     depends_on:
       - zookeeper
     ports:
